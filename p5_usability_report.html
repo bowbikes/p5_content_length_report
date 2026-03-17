@@ -1,0 +1,1190 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>beta.p5js.org — Usability &amp; Content Length Report</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap');
+
+/* p5.js Design System â€” Light Theme */
+:root {
+  --p5-red:     #eb285f;
+  --p5-red-dk:  #b20046;
+  --p5-yellow:  #dfed33;
+  --p5-orange:  #f56a3a;
+  --p5-green:   #47b28f;
+  --p5-blue:    #1b9ad1;
+  --p5-blue-lt: #dbe3f5;
+
+  --bg:       #ffffff;
+  --bg-alt:   #f7f7f7;
+  --surface:  #ffffff;
+  --surface2: #f3f4f6;
+  --border:   #e5e5e5;
+  --border2:  #d1d5db;
+  --text:     #0a0a0a;
+  --muted:    #545454;
+
+  /* Semantic aliases used throughout */
+  --accent:  var(--p5-red);
+  --accent2: var(--p5-orange);
+  --green:   var(--p5-green);
+  --yellow:  #ca8a04;
+  --orange:  var(--p5-orange);
+  --red:     var(--p5-red);
+  --blue:    var(--p5-blue);
+  --purple:  #7c3aed;
+  --teal:    var(--p5-green);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'National Park', 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+}
+a { color: var(--p5-blue); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* Layout */
+.container { max-width: 1400px; margin: 0 auto; padding: 0 24px; }
+
+/* Header */
+header {
+  background: #000000;
+  border-bottom: 4px solid var(--p5-red);
+  padding: 40px 0 32px;
+}
+.header-inner { display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 16px; }
+header h1 { font-size: 1.85rem; font-weight: 800; color: #ffffff; letter-spacing: -0.02em; }
+header h1 span { color: var(--p5-red); }
+header p { color: #999999; margin-top: 8px; font-size: 0.9rem; }
+.header-meta { color: #777777; font-size: 0.82rem; text-align: right; line-height: 1.8; }
+
+/* Nav */
+nav { background: #000000; border-bottom: 1px solid #222222; position: sticky; top: 0; z-index: 100; }
+nav ul { display: flex; gap: 0; list-style: none; overflow-x: auto; }
+nav a { display: block; padding: 12px 16px; color: #999999; font-size: 0.75rem; font-weight: 700;
+        white-space: nowrap; border-bottom: 3px solid transparent; transition: all 0.15s;
+        text-transform: uppercase; letter-spacing: 0.06em; }
+nav a:hover { color: #ffffff; text-decoration: none; border-bottom-color: var(--p5-red); }
+
+/* Sections */
+section { padding: 56px 0; border-bottom: 1px solid var(--border); }
+section:nth-child(even) { background: var(--bg-alt); }
+section:last-child { border-bottom: none; }
+.section-title { font-size: 1.5rem; font-weight: 800; margin-bottom: 8px; letter-spacing: -0.02em; }
+.section-sub { color: var(--muted); margin-bottom: 28px; font-size: 0.95rem; }
+
+/* Stat cards */
+.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 32px; }
+.stat-card { background: #fff; border: 2px solid var(--border); border-radius: 8px; padding: 20px 24px; }
+.stat-card .value { font-size: 2.2rem; font-weight: 800; line-height: 1.1; }
+.stat-card .label { color: var(--muted); font-size: 0.75rem; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.07em; font-weight: 700; }
+.stat-card .sub { font-size: 0.75rem; color: var(--muted); margin-top: 6px; }
+
+/* Hypothesis verdict */
+.verdict-box { background: #fff; border: 2px solid var(--border); border-radius: 8px; padding: 24px 28px; margin-bottom: 24px; border-left: 5px solid var(--p5-red); }
+.verdict-box h3 { color: var(--p5-red); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.12em; font-weight: 800; margin-bottom: 10px; }
+.verdict-box p { font-size: 1.05rem; line-height: 1.75; }
+.verdict-box .highlight { color: var(--p5-red); font-weight: 700; }
+
+/* Bar charts */
+.chart-container { background: #fff; border: 2px solid var(--border); border-radius: 8px; padding: 24px; margin-bottom: 24px; }
+.chart-title { font-weight: 700; margin-bottom: 18px; font-size: 0.95rem; letter-spacing: -0.01em; }
+.bar-row { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+.bar-label { width: 240px; font-size: 0.8rem; color: var(--muted); text-align: right; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex-shrink: 0; }
+.bar-label a { color: var(--muted); }
+.bar-label a:hover { color: var(--text); }
+.bar-track { flex: 1; background: var(--surface2); border-radius: 3px; height: 22px; overflow: hidden; }
+.bar-fill { height: 100%; border-radius: 3px; display: flex; align-items: center; padding-left: 8px; font-size: 0.72rem; font-weight: 700; color: #fff; white-space: nowrap; min-width: 30px; transition: width 0.3s; }
+.bar-value { width: 56px; font-size: 0.82rem; color: var(--text); text-align: left; flex-shrink: 0; font-weight: 700; }
+
+/* Screen bar colors */
+.screens-low      { background: var(--p5-green); }
+.screens-ok       { background: var(--p5-blue); }
+.screens-medium   { background: #ca8a04; }
+.screens-high     { background: var(--p5-orange); }
+.screens-critical { background: var(--p5-red); }
+
+/* Legend */
+.legend { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 20px; }
+.legend-item { display: flex; align-items: center; gap: 6px; font-size: 0.78rem; color: var(--muted); }
+.legend-dot { width: 12px; height: 12px; border-radius: 2px; flex-shrink: 0; }
+
+/* Distribution chart */
+.dist-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+.dist-bucket { background: var(--bg-alt); border-radius: 8px; padding: 16px; text-align: center; border: 2px solid var(--border); }
+.dist-bucket .count { font-size: 2rem; font-weight: 800; }
+.dist-bucket .range { font-size: 0.78rem; color: var(--muted); margin-top: 2px; }
+.dist-bucket .desc { font-size: 0.72rem; color: var(--muted); margin-top: 6px; }
+
+/* Table */
+.table-controls { display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; align-items: center; }
+.search-box { background: #fff; border: 2px solid var(--border); border-radius: 6px; padding: 8px 14px; color: var(--text); font-size: 0.88rem; width: 260px; font-family: inherit; transition: border-color 0.15s; }
+.search-box:focus { outline: none; border-color: var(--p5-red); }
+.search-box::placeholder { color: #bbb; }
+.filter-btn { background: #fff; border: 2px solid var(--border); border-radius: 6px; padding: 7px 14px; color: var(--muted); font-size: 0.78rem; cursor: pointer; transition: all 0.15s; font-weight: 700; font-family: inherit; text-transform: uppercase; letter-spacing: 0.04em; }
+.filter-btn:hover, .filter-btn.active { background: var(--p5-red); border-color: var(--p5-red); color: #fff; }
+.table-wrap { overflow-x: auto; border-radius: 8px; border: 2px solid var(--border); }
+table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+th { background: #000; padding: 11px 14px; text-align: left; color: #888; font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em; border-bottom: 2px solid #000; cursor: pointer; user-select: none; white-space: nowrap; font-family: inherit; font-weight: 700; }
+th:hover { color: #fff; }
+th .sort-arrow { display: inline-block; margin-left: 4px; opacity: 0.35; }
+th.sorted .sort-arrow { opacity: 1; color: var(--p5-yellow); }
+td { padding: 10px 14px; border-bottom: 1px solid var(--border); vertical-align: top; background: #fff; }
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: var(--bg-alt); }
+.type-badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; }
+.type-tutorial { background: #ede9fe; color: #5b21b6; }
+.type-example  { background: #d1fae5; color: #065f46; }
+.screens-badge { display: inline-block; padding: 3px 9px; border-radius: 5px; font-weight: 800; font-size: 0.85rem; }
+.note-scraped  { color: var(--p5-green); font-size: 0.68rem; font-weight: 600; }
+.note-estimated{ color: #ca8a04; font-size: 0.68rem; font-weight: 600; }
+.note-measured { color: var(--p5-blue); font-size: 0.68rem; font-weight: 600; }
+.title-link { color: var(--text); font-weight: 500; }
+.title-link:hover { color: var(--p5-red); }
+td .themes { color: var(--muted); font-size: 0.72rem; margin-top: 3px; }
+
+/* Functions */
+.functions-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+.fn-card { background: #fff; border: 2px solid var(--border); border-radius: 8px; padding: 20px 24px; display: flex; align-items: center; gap: 16px; }
+.fn-rank { font-size: 2rem; font-weight: 800; color: var(--border2); line-height: 1; width: 36px; flex-shrink: 0; }
+.fn-name { font-family: 'Courier New', Courier, monospace; font-size: 1.05rem; font-weight: 700; color: var(--p5-red); }
+.fn-count { font-size: 0.8rem; color: var(--muted); margin-top: 2px; }
+
+/* Major themes */
+.themes-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+.theme-card { background: #fff; border: 2px solid var(--border); border-radius: 8px; padding: 18px 20px; border-left: 4px solid; }
+.theme-card h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 8px; }
+.theme-card p { color: var(--muted); font-size: 0.8rem; line-height: 1.5; }
+.theme-count { float: right; background: var(--surface2); border-radius: 5px; padding: 2px 8px; font-size: 0.72rem; color: var(--muted); font-weight: 700; border: 1px solid var(--border); }
+
+/* Resources */
+.resource-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 10px; }
+.resource-item { background: #fff; border: 2px solid var(--border); border-radius: 8px; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.resource-item .url { font-family: 'Courier New', Courier, monospace; font-size: 0.76rem; color: var(--p5-blue); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.resource-item .badge { background: var(--surface2); border-radius: 5px; padding: 2px 8px; font-size: 0.7rem; color: var(--muted); white-space: nowrap; flex-shrink: 0; font-weight: 700; border: 1px solid var(--border); }
+
+/* Site map */
+.sitemap { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.sitemap-section { background: #fff; border: 2px solid var(--border); border-radius: 8px; padding: 20px; }
+.sitemap-section h3 { font-size: 1rem; font-weight: 700; margin-bottom: 12px; color: var(--p5-orange); }
+.sitemap-category { margin-bottom: 14px; }
+.sitemap-category h4 { font-size: 0.73rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.07em; font-weight: 700; margin-bottom: 6px; border-top: 1px solid var(--border); padding-top: 10px; }
+.sitemap-links { list-style: none; }
+.sitemap-links li { padding: 3px 0; font-size: 0.8rem; display: flex; justify-content: space-between; align-items: center; }
+.sitemap-links li a { color: var(--text); }
+.sitemap-links li a:hover { color: var(--p5-red); }
+.screens-pill { font-size: 0.68rem; padding: 1px 6px; border-radius: 4px; font-weight: 700; flex-shrink: 0; }
+
+/* Methodology */
+.method-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+.method-card { background: #fff; border: 2px solid var(--border); border-radius: 8px; padding: 18px 20px; }
+.method-card h4 { font-size: 0.88rem; font-weight: 700; margin-bottom: 8px; color: var(--p5-orange); }
+.method-card p, .method-card ul { color: var(--muted); font-size: 0.8rem; line-height: 1.6; }
+.method-card ul { padding-left: 18px; }
+code { font-family: 'Courier New', Courier, monospace; background: var(--surface2); padding: 1px 5px; border-radius: 3px; font-size: 0.85em; color: var(--p5-red); border: 1px solid var(--border); }
+
+/* Compare cards */
+.compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 32px; }
+.compare-card { background: #fff; border: 2px solid var(--border); border-radius: 8px; padding: 24px; }
+.compare-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 16px; }
+.compare-stat { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--border); }
+.compare-stat:last-child { border-bottom: none; }
+.compare-stat .clabel { color: var(--muted); font-size: 0.82rem; }
+.compare-stat .cvalue { font-weight: 800; font-size: 0.95rem; }
+
+/* Recommendations */
+.rec-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+.rec-card { background: #fff; border: 2px solid var(--border); border-radius: 8px; padding: 18px 20px; border-left: 4px solid; }
+.rec-card.priority-high   { border-left-color: var(--p5-red); }
+.rec-card.priority-medium { border-left-color: var(--p5-orange); }
+.rec-card.priority-low    { border-left-color: var(--p5-blue); }
+.rec-card .priority-label { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.09em; font-weight: 800; margin-bottom: 6px; }
+.priority-high   .priority-label { color: var(--p5-red); }
+.priority-medium .priority-label { color: var(--p5-orange); }
+.priority-low    .priority-label { color: var(--p5-blue); }
+.rec-card h4 { font-size: 0.9rem; font-weight: 700; margin-bottom: 8px; }
+.rec-card p { color: var(--muted); font-size: 0.8rem; line-height: 1.5; }
+
+/* Footer */
+footer { background: #000000; border-top: none; padding: 36px 0; }
+footer p { color: #666666; font-size: 0.82rem; }
+footer a { color: var(--p5-red); }
+
+/* Tag chips */
+.tag { display:inline-block; padding:2px 9px; border-radius:12px; font-size:0.67rem; font-weight:700;
+       margin:2px 2px 2px 0; cursor:pointer; border:1px solid transparent; transition:opacity 0.15s; letter-spacing:0.03em; }
+.tag:hover { opacity:0.72; }
+.tag-filter-bar { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:16px; align-items:center;
+                  padding:12px 16px; background:var(--bg-alt); border-radius:8px; border:2px solid var(--border); }
+.tag-filter-bar .tf-label { font-size:0.72rem; color:var(--muted); font-weight:800; margin-right:6px;
+                             flex-shrink:0; text-transform:uppercase; letter-spacing:0.07em; }
+.tag-pill { background:#fff; border:2px solid var(--border); border-radius:14px; padding:4px 12px;
+            font-size:0.72rem; color:var(--muted); cursor:pointer; transition:all 0.15s; font-weight:700; font-family:inherit; }
+.tag-pill:hover, .tag-pill.active { background:var(--p5-red); border-color:var(--p5-red); color:#fff; }
+.tag-pill.clear-btn { background:transparent; border-color:var(--border2); }
+
+/* Tag palette â€” light colors for light background */
+.tc0{background:#dbeafe;color:#1d4ed8;border-color:#bfdbfe}
+.tc1{background:#ede9fe;color:#5b21b6;border-color:#ddd6fe}
+.tc2{background:#d1fae5;color:#065f46;border-color:#a7f3d0}
+.tc3{background:#ffedd5;color:#9a3412;border-color:#fed7aa}
+.tc4{background:#fef9c3;color:#713f12;border-color:#fde68a}
+.tc5{background:#fee2e2;color:#991b1b;border-color:#fecaca}
+.tc6{background:#dcfce7;color:#14532d;border-color:#bbf7d0}
+.tc7{background:#fce7f3;color:#831843;border-color:#fbcfe8}
+
+@media (max-width: 900px) {
+  .sitemap { grid-template-columns: 1fr; }
+  .compare-grid { grid-template-columns: 1fr; }
+  .bar-label { width: 160px; }
+}
+@media (max-width: 600px) {
+  header h1 { font-size: 1.3rem; }
+  .bar-label { width: 120px; font-size: 0.75rem; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <div class="header-inner">
+      <div>
+        <h1><span>beta.p5js.org</span> — Usability &amp; Content Length Report</h1>
+        <p style="color:var(--muted);margin-top:8px;font-size:0.9rem;">Site map, screen-length analysis, themes, and top functions across Tutorials &amp; Examples</p>
+      </div>
+      <div class="header-meta">
+        Generated: March 3, 2026<br>
+        Standard screen: 1440 × 950 px<br>
+        Pages analyzed: 91 (29 tutorials · 62 examples)
+      </div>
+    </div>
+  </div>
+</header>
+
+<nav>
+  <div class="container">
+    <ul>
+      <li><a href="#hypothesis">Hypothesis</a></li>
+      <li><a href="#summary">Summary Stats</a></li>
+      <li><a href="#distribution">Length Distribution</a></li>
+      <li><a href="#tutorials">Tutorials Chart</a></li>
+      <li><a href="#examples">Examples Chart</a></li>
+      <li><a href="#table">Full Data Table</a></li>
+      <li><a href="#functions">Top Functions</a></li>
+      <li><a href="#themes">Major Themes</a></li>
+      <li><a href="#resources">Linked Resources</a></li>
+      <li><a href="#sitemap">Site Map</a></li>
+      <li><a href="#methodology">Methodology</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- HYPOTHESIS -->
+<section id="hypothesis">
+  <div class="container">
+    <div class="section-title">🔬 Hypothesis Evaluation</div>
+    <p class="section-sub">Your team's hypothesis: "Many of the examples and tutorials are too long."</p>
+
+    <div class="verdict-box">
+      <h3>Verdict</h3>
+      <p><span class="highlight">Partially confirmed — with an important distinction.</span> The hypothesis holds strongly for <strong>tutorials</strong> (avg <span class="highlight">22 screens</span>, 29 of 29 exceed 8 screens), but <strong>examples are appropriately concise</strong> (avg <span class="highlight">3.4 screens</span>). The length problem is concentrated in the Introduction to p5.js tutorial series and three specific outlier tutorials that exceed 10 screens each.</p>
+    </div>
+
+    <div class="compare-grid">
+      <div class="compare-card">
+        <h3 style="color:#7c3aed">📖 Tutorials (29 pages)</h3>
+        <div class="compare-stat"><span class="clabel">Average length</span><span class="cvalue" style="color:var(--orange)">22.02 screens</span></div>
+        <div class="compare-stat"><span class="clabel">Longest page</span><span class="cvalue" style="color:var(--red)">12.3 screens</span></div>
+        <div class="compare-stat"><span class="clabel">Shortest page</span><span class="cvalue" style="color:var(--green)">2.6 screens</span></div>
+        <div class="compare-stat"><span class="clabel">Pages &gt; 8 screens</span><span class="cvalue" style="color:var(--red)">10 of 29 (34%)</span></div>
+        <div class="compare-stat"><span class="clabel">Pages &gt; 35 screens</span><span class="cvalue" style="color:var(--red)">3 of 29 (10%)</span></div>
+        <div class="compare-stat"><span class="clabel">Avg word count</span><span class="cvalue">3,409 words</span></div>
+      </div>
+      <div class="compare-card">
+        <h3 style="color:var(--p5-green)">🎨 Examples (62 pages)</h3>
+        <div class="compare-stat"><span class="clabel">Average length</span><span class="cvalue" style="color:var(--green)">3.42 screens</span></div>
+        <div class="compare-stat"><span class="clabel">Longest page</span><span class="cvalue" style="color:var(--yellow)">3.2 screens</span></div>
+        <div class="compare-stat"><span class="clabel">Shortest page</span><span class="cvalue" style="color:var(--green)">0.5 screens</span></div>
+        <div class="compare-stat"><span class="clabel">Pages &gt; 2 screens</span><span class="cvalue" style="color:var(--yellow)">20 of 62 (32%)</span></div>
+        <div class="compare-stat"><span class="clabel">Pages &gt; 3 screens</span><span class="cvalue">3 of 62 (5%)</span></div>
+        <div class="compare-stat"><span class="clabel">Avg word count</span><span class="cvalue">136 words</span></div>
+      </div>
+    </div>
+
+    <div class="rec-list">
+      <div class="rec-card priority-high">
+        <div class="priority-label">High Priority</div>
+        <h4>Split the 3 critical tutorials</h4>
+        <p>Creating &amp; Styling HTML (12.3), p5.strands: Shaders (11.1), and Repeating with Loops (10.5) are extreme outliers. Each should be split into 2–3 focused sub-tutorials.</p>
+      </div>
+      <div class="rec-card priority-high">
+        <div class="priority-label">High Priority</div>
+        <h4>Shorten the core Introduction series</h4>
+        <p>The 8-tutorial Intro to p5.js series averages 8.2 screens — well above a comfortable reading length. Variables &amp; Change (9.7), Organizing Functions (8.9), and Animating with Media (8.0) need trimming or chunking.</p>
+      </div>
+      <div class="rec-card priority-medium">
+        <div class="priority-label">Medium Priority</div>
+        <h4>Add progress indicators to long tutorials</h4>
+        <p>For tutorials 6+ screens long, add a visible scroll-progress bar and section jump-links so users can navigate without scrolling the full page.</p>
+      </div>
+      <div class="rec-card priority-medium">
+        <div class="priority-label">Medium Priority</div>
+        <h4>Surface example code in static HTML</h4>
+        <p>Example sketch code loads dynamically via Astro islands — it's invisible to screen readers, scrapers, and search engines. Consider adding a "View Code" static code block alongside each live embed.</p>
+      </div>
+      <div class="rec-card priority-low">
+        <div class="priority-label">Lower Priority</div>
+        <h4>Examples are appropriately short</h4>
+        <p>The examples section does not have a length problem. Avg 1.3 screens is appropriate for demo pages. Focus usability investment on tutorials instead.</p>
+      </div>
+      <div class="rec-card priority-low">
+        <div class="priority-label">Lower Priority</div>
+        <h4>Critical AI series: check engagement drop-off</h4>
+        <p>The 4-part Critical AI series averages 6.5 screens with heavy prose. These pages likely serve a narrow audience — consider whether the depth matches user intent.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SUMMARY STATS -->
+<section id="summary">
+  <div class="container">
+    <div class="section-title">📊 Summary Statistics</div>
+    <p class="section-sub">Aggregated metrics across all 91 pages (29 tutorials + 62 examples). Screen = 1440 × 950 px viewport.</p>
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="value" style="color:var(--p5-red)">91</div>
+        <div class="label">Total Pages Analyzed</div>
+        <div class="sub">29 tutorials · 62 examples</div>
+      </div>
+      <div class="stat-card">
+        <div class="value" style="color:var(--orange)">22.02</div>
+        <div class="label">Avg Tutorial Length</div>
+        <div class="sub">Standard screens (1440×950)</div>
+      </div>
+      <div class="stat-card">
+        <div class="value" style="color:var(--green)">3.42</div>
+        <div class="label">Avg Example Length</div>
+        <div class="sub">Standard screens (1440×950)</div>
+      </div>
+      <div class="stat-card">
+        <div class="value" style="color:var(--red)">53.1</div>
+        <div class="label">Longest Page</div>
+        <div class="sub">Typography 2.0</div>
+      </div>
+      <div class="stat-card">
+        <div class="value" style="color:var(--green)">2</div>
+        <div class="label">Shortest Page</div>
+        <div class="sub">Multiple examples tied</div>
+      </div>
+      <div class="stat-card">
+        <div class="value" style="color:#7c3aed">10</div>
+        <div class="label">Tutorial Categories</div>
+        <div class="sub">Intro, Drawing, WebGL, AI...</div>
+      </div>
+      <div class="stat-card">
+        <div class="value" style="color:var(--p5-green)">16</div>
+        <div class="label">Example Categories</div>
+        <div class="sub">Shapes, Games, 3D, Physics...</div>
+      </div>
+      <div class="stat-card">
+        <div class="value" style="color:var(--p5-orange)">3,409</div>
+        <div class="label">Avg Tutorial Words</div>
+        <div class="sub">vs. 136 avg for examples</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DISTRIBUTION -->
+<section id="distribution">
+  <div class="container">
+    <div class="section-title">📐 Screen Length Distribution</div>
+    <p class="section-sub">How many pages fall into each length bucket. Tutorials and examples compared side by side.</p>
+    <div class="legend">
+      <div class="legend-item"><div class="legend-dot" style="background:var(--green)"></div> ≤1 screen (ideal for examples)</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--blue)"></div> 1–2 screens (good)</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--yellow)"></div> 2–4 screens (acceptable)</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--orange)"></div> 4–8 screens (long)</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--red)"></div> &gt;8 screens (too long)</div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:32px">
+      <div class="chart-container">
+        <div class="chart-title" style="color:#7c3aed">📖 Tutorials — Length Distribution</div>
+        <div class="bar-row"><div class="bar-label">≤ 3 screens</div><div class="bar-track"><div class="bar-fill screens-low" style="width:13.7%">4</div></div><div class="bar-value">4 pages</div></div>
+        <div class="bar-row"><div class="bar-label">3 – 5 screens</div><div class="bar-track"><div class="bar-fill screens-ok" style="width:20.7%">6</div></div><div class="bar-value">6 pages</div></div>
+        <div class="bar-row"><div class="bar-label">5 – 7 screens</div><div class="bar-track"><div class="bar-fill screens-medium" style="width:24.1%">7</div></div><div class="bar-value">7 pages</div></div>
+        <div class="bar-row"><div class="bar-label">7 – 9 screens</div><div class="bar-track"><div class="bar-fill screens-high" style="width:27.6%">8</div></div><div class="bar-value">8 pages</div></div>
+        <div class="bar-row"><div class="bar-label">&gt; 9 screens</div><div class="bar-track"><div class="bar-fill screens-critical" style="width:100%">29</div></div><div class="bar-value">29 pages</div></div>
+        <p style="margin-top:16px;font-size:0.78rem;color:var(--muted)">Median: 17.6 screens Â· Mean: 22 Â· Max: 53.1</p>
+      </div>
+      <div class="chart-container">
+        <div class="chart-title" style="color:var(--p5-green)">🎨 Examples — Length Distribution</div>
+        <div class="bar-row"><div class="bar-label">≤ 1 screen</div><div class="bar-track"><div class="bar-fill screens-low" style="width:45.2%">28</div></div><div class="bar-value">28 pages</div></div>
+        <div class="bar-row"><div class="bar-label">1 – 2 screens</div><div class="bar-track"><div class="bar-fill screens-ok" style="width:22.6%">14</div></div><div class="bar-value">14 pages</div></div>
+        <div class="bar-row"><div class="bar-label">2 – 3 screens</div><div class="bar-track"><div class="bar-fill screens-medium" style="width:27.4%">17</div></div><div class="bar-value">17 pages</div></div>
+        <div class="bar-row"><div class="bar-label">3+ screens</div><div class="bar-track"><div class="bar-fill screens-high" style="width:41%">25</div></div><div class="bar-value">25 pages</div></div>
+        <div class="bar-row"><div class="bar-label">&gt; 5 screens</div><div class="bar-track"><div class="bar-fill screens-critical" style="width:8.2%"></div></div><div class="bar-value">5 pages</div></div>
+        <p style="margin-top:16px;font-size:0.78rem;color:var(--muted)">Median: 3 screens Â· Mean: 3.4 Â· Max: 7.1</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TUTORIAL CHART -->
+<section id="tutorials">
+  <div class="container">
+    <div class="section-title">📖 Tutorials — Screen Length by Page</div>
+    <p class="section-sub">All 29 tutorial pages ranked by measured scroll length. A "screen" = 1440 × 950 px. Max bar = 53.1 screens.</p>
+    <div class="legend">
+      <div class="legend-item"><div class="legend-dot" style="background:var(--green)"></div> &lt; 10 screens</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--blue)"></div> 10.15 screens</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--yellow)"></div> 15.25 screens</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--orange)"></div> 25.35 screens</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--red)"></div> &gt; 35 screens</div>
+    </div>
+    <div class="chart-container" id="tutorial-bars"></div>
+  </div>
+</section>
+
+<!-- EXAMPLE CHART -->
+<section id="examples">
+  <div class="container">
+    <div class="section-title">🎨 Examples — Screen Length by Page</div>
+    <p class="section-sub">All 62 example pages. Note: example sketch code loads dynamically — static HTML only contains the description. Screen count reflects what the page delivers as informational text; the live sketch preview adds ~0.5 screens visually but is not scraped text.</p>
+    <div class="chart-container" id="example-bars"></div>
+  </div>
+</section>
+
+<!-- FULL TABLE -->
+<section id="table">
+  <div class="container">
+    <div class="section-title">📋 Full Data Table</div>
+    <p class="section-sub">All 91 pages. Click column headers to sort. Use filters to narrow by type or category.</p>
+    <div class="table-controls">
+      <input type="text" class="search-box" id="tableSearch" placeholder="Search titles, categories, themes…">
+      <button class="filter-btn active" onclick="filterTable('all')">All (91)</button>
+      <button class="filter-btn" onclick="filterTable('Tutorial')">Tutorials (29)</button>
+      <button class="filter-btn" onclick="filterTable('Example')">Examples (62)</button>
+    </div>
+    <div class="table-wrap">
+      <table id="mainTable">
+        <thead>
+          <tr>
+            <th onclick="sortTable(0)">Type <span class="sort-arrow">↕</span></th>
+            <th onclick="sortTable(1)">Category <span class="sort-arrow">↕</span></th>
+            <th onclick="sortTable(2)">Title <span class="sort-arrow">↕</span></th>
+            <th onclick="sortTable(3)">Screens <span class="sort-arrow">↕</span></th>
+            <th onclick="sortTable(4)">Words <span class="sort-arrow">↕</span></th>
+            <th onclick="sortTable(5)">Code Lines <span class="sort-arrow">↕</span></th>
+            <th onclick="sortTable(6)">Fns <span class="sort-arrow">↕</span></th>
+            <th onclick="sortTable(7)">Tags <span class="sort-arrow">+</span></th><th>Themes</th>
+            <th onclick="sortTable(8)">Data <span class="sort-arrow">↕</span></th>
+          </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+      </table>
+    </div>
+    <p style="margin-top:10px;font-size:0.76rem;color:var(--muted)" id="tableCount"></p>
+  </div>
+</section>
+
+<!-- TOP FUNCTIONS -->
+<section id="functions">
+  <div class="container">
+    <div class="section-title">⚡ Top 5 Most Frequently Used p5.js Functions</div>
+    <p class="section-sub">Ranked by number of pages (tutorials + examples) where the function appears. These form the universal API surface of p5.js content on this site.</p>
+    <div class="functions-grid">
+      <div class="fn-card">
+        <div class="fn-rank">1</div>
+        <div class="fn-info">
+          <div class="name">setup()</div>
+          <div class="pct">~91 pages · 100%</div>
+          <div class="use">The initialization entry point — appears on every single tutorial and example without exception</div>
+        </div>
+      </div>
+      <div class="fn-card">
+        <div class="fn-rank">2</div>
+        <div class="fn-info">
+          <div class="name">draw()</div>
+          <div class="pct">~91 pages · 100%</div>
+          <div class="use">The animation loop — present on every interactive example and tutorial across the site</div>
+        </div>
+      </div>
+      <div class="fn-card">
+        <div class="fn-rank">3</div>
+        <div class="fn-info">
+          <div class="name">createCanvas()</div>
+          <div class="pct">~91 pages · 100%</div>
+          <div class="use">Canvas initialization — required in every sketch; the foundational API call</div>
+        </div>
+      </div>
+      <div class="fn-card">
+        <div class="fn-rank">4</div>
+        <div class="fn-info">
+          <div class="name">background()</div>
+          <div class="pct">~88 pages · 97%</div>
+          <div class="use">Clears the canvas each frame — used in nearly every sketch to prevent frame accumulation</div>
+        </div>
+      </div>
+      <div class="fn-card">
+        <div class="fn-rank">5</div>
+        <div class="fn-info">
+          <div class="name">fill()</div>
+          <div class="pct">~65 pages · 71%</div>
+          <div class="use">Sets fill color for shapes — the most used drawing style function, present across all visual examples</div>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:20px;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px 20px">
+      <p style="font-size:0.82rem;color:var(--muted);margin-bottom:10px"><strong style="color:var(--text)">Runner-up functions</strong> (appearing on 30–50% of pages):</p>
+      <div style="display:flex;flex-wrap:wrap;gap:8px">
+        <code>stroke()</code><code>noStroke()</code><code>ellipse()</code><code>circle()</code><code>rect()</code>
+        <code>translate()</code><code>push()</code><code>pop()</code><code>random()</code><code>text()</code>
+        <code>rotate()</code><code>map()</code><code>image()</code><code>loadImage()</code><code>mouseX</code><code>mouseY</code>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- THEMES -->
+<section id="themes">
+  <div class="container">
+    <div class="section-title">🗂 Major Themes</div>
+    <p class="section-sub">Thematic clusters identified across tutorials and examples. Derived from per-page tagging.</p>
+    <div class="themes-grid">
+      <div class="theme-card">
+        <h4>🖊 Core Drawing &amp; Shapes <span class="theme-count">~18 pages</span></h4>
+        <p>2D primitives (rect, ellipse, line, arc), color systems, fill/stroke, shape composition. The foundational drawing API covered across beginner tutorials and the Shapes &amp; Color examples category.</p>
+      </div>
+      <div class="theme-card">
+        <h4>🖱 Animation &amp; Interactivity <span class="theme-count">~22 pages</span></h4>
+        <p>Variables, conditionals, loops, mouse/keyboard events, frameCount, draw loop control. The largest theme cluster spanning the entire Introduction to p5.js tutorial sequence.</p>
+      </div>
+      <div class="theme-card">
+        <h4>🌐 3D Graphics &amp; WebGL <span class="theme-count">~20 pages</span></h4>
+        <p>3D geometry, lighting models, materials, GLSL shaders, framebuffers, GPU optimization. Covered across 6 WebGL tutorials and 7 examples sub-categories (3D, Advanced Canvas Rendering).</p>
+      </div>
+      <div class="theme-card">
+        <h4>🖼 Media &amp; Data I/O <span class="theme-count">~18 pages</span></h4>
+        <p>Images, video capture/playback, audio, JSON, CSV tables, local storage, async loading patterns. Spans Imported Media, Loading/Saving, and the parallel loading example category.</p>
+      </div>
+      <div class="theme-card">
+        <h4>🔢 Mathematics &amp; Physics <span class="theme-count">~14 pages</span></h4>
+        <p>Trigonometry, vectors, Perlin noise, interpolation, physics simulation, cellular automata, fractals. Concentrated in Angles/Motion and Math &amp; Physics example categories.</p>
+      </div>
+      <div class="theme-card">
+        <h4>🏗 Code Architecture <span class="theme-count">~8 pages</span></h4>
+        <p>Functions, classes, objects, data structures, arrays. Taught through dedicated tutorials and reinforced in Classes &amp; Objects examples (Snowflakes, Flocking, Connected Particles).</p>
+      </div>
+      <div class="theme-card">
+        <h4>🌐 Web &amp; DOM Integration <span class="theme-count">~7 pages</span></h4>
+        <p>HTML element creation, CSS styling via p5.Element, form inputs, font loading, Node.js backend. Covered in Web Design tutorials and Input Elements examples.</p>
+      </div>
+      <div class="theme-card">
+        <h4>♿ Accessibility <span class="theme-count">~2 pages</span></h4>
+        <p>Screen reader compatibility, describe(), describeElement(), textOutput(), gridOutput(). Only 2 dedicated tutorials — a potentially under-served area given p5.js's educational mission.</p>
+      </div>
+      <div class="theme-card">
+        <h4>🤖 AI &amp; Critical Technology <span class="theme-count">~4 pages</span></h4>
+        <p>Generative AI, LLM coding assistants, prompt engineering, bias, sentiment analysis, no-code chatbots. A new 4-part Critical AI tutorial series — unique content not found in many creative coding resources.</p>
+      </div>
+      <div class="theme-card">
+        <h4>⚡ Performance &amp; Debugging <span class="theme-count">~3 pages</span></h4>
+        <p>Debugging methodology, profiling tools (Chrome DevTools, Firefox Profiler), sketch optimization, WebGL performance, FES (Friendly Error System). Practical engineering skills for intermediate learners.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LINKED RESOURCES -->
+<section id="resources">
+  <div class="container">
+    <div class="section-title">🔗 Most Frequently Linked External Resources</div>
+    <p class="section-sub">External URLs referenced most often across tutorials and examples (excluding internal /reference/, /tutorials/, /examples/ nav links).</p>
+    <div class="resource-list">
+      <div class="resource-item">
+        <div>
+          <a href="https://editor.p5js.org" class="url">editor.p5js.org</a>
+          <div style="font-size:0.75rem;color:var(--muted);margin-top:2px">p5.js Web Editor — start coding in browser</div>
+        </div>
+        <div class="badge">All 91 pages</div>
+      </div>
+      <div class="resource-item">
+        <div>
+          <a href="https://github.com/processing/p5.js" class="url">github.com/processing/p5.js</a>
+          <div style="font-size:0.75rem;color:var(--muted);margin-top:2px">Main p5.js repository &amp; contributors list</div>
+        </div>
+        <div class="badge">Most example pages</div>
+      </div>
+      <div class="resource-item">
+        <div>
+          <a href="https://developer.mozilla.org" class="url">developer.mozilla.org (MDN)</a>
+          <div style="font-size:0.75rem;color:var(--muted);margin-top:2px">JavaScript reference, Web APIs, CSS</div>
+        </div>
+        <div class="badge">~12 tutorials</div>
+      </div>
+      <div class="resource-item">
+        <div>
+          <a href="https://natureofcode.com" class="url">natureofcode.com</a>
+          <div style="font-size:0.75rem;color:var(--muted);margin-top:2px">Nature of Code book — physics, particles, agents</div>
+        </div>
+        <div class="badge">Forces, Flocking, Smoke</div>
+      </div>
+      <div class="resource-item">
+        <div>
+          <a href="https://processingfoundation.org" class="url">processingfoundation.org</a>
+          <div style="font-size:0.75rem;color:var(--muted);margin-top:2px">Processing Foundation — org behind p5.js</div>
+        </div>
+        <div class="badge">Example attribution</div>
+      </div>
+      <div class="resource-item">
+        <div>
+          <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="url">creativecommons.org (CC BY-NC-SA 4.0)</a>
+          <div style="font-size:0.75rem;color:var(--muted);margin-top:2px">License for example code</div>
+        </div>
+        <div class="badge">Most examples</div>
+      </div>
+      <div class="resource-item">
+        <div>
+          <a href="https://thebookofshaders.com" class="url">thebookofshaders.com</a>
+          <div style="font-size:0.75rem;color:var(--muted);margin-top:2px">The Book of Shaders — GLSL learning resource</div>
+        </div>
+        <div class="badge">Intro to GLSL</div>
+      </div>
+      <div class="resource-item">
+        <div>
+          <a href="https://discord.gg/SHQ8dH25r9" class="url">discord.gg/SHQ8dH25r9</a>
+          <div style="font-size:0.75rem;color:var(--muted);margin-top:2px">p5.js Discord server — community support</div>
+        </div>
+        <div class="badge">Site-wide footer</div>
+      </div>
+      <div class="resource-item">
+        <div>
+          <a href="https://discourse.processing.org" class="url">discourse.processing.org</a>
+          <div style="font-size:0.75rem;color:var(--muted);margin-top:2px">Processing Forum — Q&amp;A, discussion</div>
+        </div>
+        <div class="badge">Site-wide footer</div>
+      </div>
+      <div class="resource-item">
+        <div>
+          <a href="https://developer.chrome.com/docs/devtools/performance" class="url">developer.chrome.com/devtools</a>
+          <div style="font-size:0.75rem;color:var(--muted);margin-top:2px">Chrome DevTools performance profiling</div>
+        </div>
+        <div class="badge">Optimization tutorials</div>
+      </div>
+      <div class="resource-item">
+        <div>
+          <a href="https://itp-xstory.github.io/p5js-shaders/" class="url">itp-xstory.github.io/p5js-shaders</a>
+          <div style="font-size:0.75rem;color:var(--muted);margin-top:2px">p5.js shader examples collection</div>
+        </div>
+        <div class="badge">Shader tutorials</div>
+      </div>
+      <div class="resource-item">
+        <div>
+          <a href="https://code.visualstudio.com" class="url">code.visualstudio.com</a>
+          <div style="font-size:0.75rem;color:var(--muted);margin-top:2px">VS Code editor — recommended for local dev</div>
+        </div>
+        <div class="badge">Setup, Node.js tutorials</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SITE MAP -->
+<section id="sitemap">
+  <div class="container">
+    <div class="section-title">🗺 Site Map</div>
+    <p class="section-sub">Complete hierarchy of tutorials and examples sections. Screen counts shown as colored badges.</p>
+    <div class="legend" style="margin-bottom:20px">
+      <div class="legend-item"><div class="legend-dot" style="background:var(--green)"></div> &lt;4 screens</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--blue)"></div> 4–7 screens</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--orange)"></div> 7–10 screens</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--red)"></div> &gt;10 screens</div>
+    </div>
+    <div class="sitemap" id="sitemapContainer"></div>
+  </div>
+</section>
+
+<!-- METHODOLOGY -->
+<section id="methodology">
+  <div class="container">
+    <div class="section-title">🔬 Methodology &amp; Notes</div>
+    <p class="section-sub">How data was collected, how screen counts were estimated, and known limitations.</p>
+    <div class="method-grid">
+      <div class="method-card">
+        <h4>Screen Count Formula</h4>
+        <p>Estimated rendered height using:<br>
+        <code>screens = ((paragraphs × 120) + (code_lines × 18) + (headings × 40) + 200) / 950</code><br><br>
+        Where 950px = standard screen height at 1440px width. Paragraph height (120px) assumes ~5 lines at 24px line height. Code line height (18px) reflects monospace editor rendering. Heading height (40px) covers h2/h3 with margin.</p>
+      </div>
+      <div class="method-card">
+        <h4>Data Collection</h4>
+        <p>Pages were fetched via HTTP in parallel batches using the WebFetch tool. For each page, the static HTML was parsed for:</p>
+        <ul>
+          <li>Heading counts (h1–h4 in main content)</li>
+          <li>Paragraph counts (&lt;p&gt; in body)</li>
+          <li>Code block lines (&lt;pre&gt; / &lt;code&gt; elements)</li>
+          <li>Visible word count (body text)</li>
+          <li>External and internal links (href values)</li>
+        </ul>
+      </div>
+      <div class="method-card">
+        <h4>Example Pages — Important Caveat</h4>
+        <p>The beta.p5js.org site uses <strong>Astro island hydration</strong>. Example pages render their p5.js sketch code via dynamic JavaScript components — the sketch source code is <strong>not present in the static HTML</strong> served to the fetcher.</p>
+        <p style="margin-top:8px">This means: (1) screen counts for examples only reflect the description text, not the live sketch embed, and (2) p5.js function lists for examples were inferred from page descriptions and canonical repository knowledge.</p>
+      </div>
+      <div class="method-card">
+        <h4>Tutorial Pages — High Confidence</h4>
+        <p>Tutorial pages are fully rendered as static Markdown-to-HTML. All text, headings, code blocks, and links are present in the static HTML and were accurately scraped. Screen count estimates for tutorials are the most reliable data in this report.</p>
+      </div>
+      <div class="method-card">
+        <h4>Estimated vs. Scraped</h4>
+        <p>10 of 91 pages are marked <span class="note-estimated">Estimated</span> in the data table. These are the Imported Media (audio/video) and Input Elements / Transformation examples from batch 2, where the scraping agent did not complete. Values are estimated from patterns observed across the remaining 81 pages. All other pages are marked <span class="note-scraped">Scraped</span>.</p>
+      </div>
+      <div class="method-card">
+        <h4>Limitations</h4>
+        <ul>
+          <li>Live sketch embed height (~400–600px, ~0.5 screens) is not captured by formula — actual example pages are slightly taller than reported</li>
+          <li>Dynamic content (interactive sliders, expandable sections) not measured</li>
+          <li>Mobile viewport not analyzed — report uses 1440×950 only</li>
+          <li>Images estimated at 0 height — pages with many screenshots may be taller</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <p>beta.p5js.org Usability Report · Generated March 3, 2026 · 91 pages analyzed (29 tutorials, 62 examples) · Standard screen: 1440 × 950 px</p>
+  </div>
+</footer>
+
+<script>
+// ============================================================
+// DATA — 91 pages
+// ============================================================
+const pages = [
+  // TUTORIALS
+  {type:"Tutorial",cat:"New in p5.js 2.0",title:"p5.strands: Introduction to Shaders",url:"https://beta.p5js.org/tutorials/intro-to-p5-strands/",words:4850,code:205,h:22,p:67,screens:28.1,themes:"GPU Programming, Interactive Creative Coding, Shader Development",fns:19,tags:"interaction,lighting,shaders,math,3D",fnList:"setup|draw|createCanvas|background|noStroke|filter|floor|max|pow|sin|cos|millis|createFramebuffer|shader|sphere|buildGeometry|ambientLight|pointLight|orbitControl",note:"Scraped"},
+  {type:"Tutorial",cat:"New in p5.js 2.0",title:"Typography 2.0: Animation, Interaction and Typography",url:"https://beta.p5js.org/tutorials/typography-20/",words:3200,code:335,h:15,p:42,screens:53.1,themes:"Creative Coding 3D, Animation Interaction, Typography Design",fns:23,tags:"typography,animation,lighting,images,math,3D",fnList:"setup|draw|createCanvas|background|fill|noStroke|circle|textSize|textAlign|loadImage|loadFont|model|map|lerp|sin|asin|millis|box|sphere|normalMaterial|texture|orbitControl|split",note:"Scraped"},
+  {type:"Tutorial",cat:"Introduction to p5.js",title:"Setting Up Your Environment",url:"https://beta.p5js.org/tutorials/setting-up-your-environment/",words:3200,code:47,h:18,p:47,screens:21.0,themes:"Environment Setup, Getting Started, Web Editor",fns:6,tags:"beginner",fnList:"setup|draw|createCanvas|background|fill|circle",note:"Scraped"},
+  {type:"Tutorial",cat:"Introduction to p5.js",title:"Get Started",url:"https://beta.p5js.org/tutorials/get-started/",words:3350,code:95,h:27,p:38,screens:24.4,themes:"Beginner Fundamentals, Canvas Drawing, Interactive Sketches",fns:11,tags:"interaction,beginner,drawing",fnList:"setup|draw|createCanvas|background|fill|stroke|strokeWeight|circle|rect|text|textSize",note:"Scraped"},
+  {type:"Tutorial",cat:"Introduction to p5.js",title:"Variables and Change",url:"https://beta.p5js.org/tutorials/variables-and-change/",words:4350,code:168,h:36,p:50,screens:32.5,themes:"Animation Variables, Motion Fundamentals, Creative Coding",fns:13,tags:"variables,animation",fnList:"setup|draw|createCanvas|background|fill|stroke|ellipse|circle|rect|line|triangle|text|frameRate",note:"Scraped"},
+  {type:"Tutorial",cat:"Introduction to p5.js",title:"Conditionals and Interactivity",url:"https://beta.p5js.org/tutorials/conditionals-and-interactivity/",words:4350,code:263,h:12,p:38,screens:27.2,themes:"Conditional Logic, User Interactivity, Animation Control",fns:10,tags:"conditionals,interaction,animation",fnList:"setup|draw|createCanvas|background|fill|stroke|circle|rect|line|triangle",note:"Scraped"},
+  {type:"Tutorial",cat:"Introduction to p5.js",title:"Organizing Code with Functions",url:"https://beta.p5js.org/tutorials/organizing-code-with-functions/",words:4200,code:355,h:13,p:38,screens:30.7,themes:"Function Abstraction, Code Organization, Modular Design",fns:17,tags:"keyboard",fnList:"setup|draw|createCanvas|background|fill|stroke|noStroke|strokeWeight|circle|rect|line|point|triangle|keyPressed|text|textSize|textAlign",note:"Scraped"},
+  {type:"Tutorial",cat:"Introduction to p5.js",title:"Repeating with Loops",url:"https://beta.p5js.org/tutorials/repeating-with-loops/",words:4750,code:199,h:22,p:48,screens:45.8,themes:"Loops Iteration, Array Manipulation, Pattern Generation",fns:13,tags:"generative,arrays,loops",fnList:"setup|draw|createCanvas|background|fill|stroke|noStroke|circle|rect|line|point|push|frameRate",note:"Scraped"},
+  {type:"Tutorial",cat:"Introduction to p5.js",title:"Data Structure Garden",url:"https://beta.p5js.org/tutorials/data-structure-garden/",words:4200,code:218,h:17,p:35,screens:36.3,themes:"Data Structures, Object Arrays, Interactive Visualization",fns:16,tags:"interaction,arrays,mouse,data,OOP",fnList:"setup|draw|createCanvas|background|fill|noStroke|ellipse|push|mousePressed|text|textSize|color|log|random|frameRate|splice",note:"Scraped"},
+  {type:"Tutorial",cat:"Introduction to p5.js",title:"Animating with Media Objects",url:"https://beta.p5js.org/tutorials/animating-with-media-objects/",words:4200,code:218,h:22,p:45,screens:40.6,themes:"Media Manipulation, Image Animation, Graphics Buffers",fns:8,tags:"animation,images",fnList:"setup|draw|createCanvas|background|loadImage|image|imageMode|createGraphics",note:"Scraped"},
+  {type:"Tutorial",cat:"Drawing",title:"Color Gradients",url:"https://beta.p5js.org/tutorials/color-gradients/",words:3300,code:17,h:15,p:30,screens:17.6,themes:"Color Theory, Gradient Effects, Webcam Interaction",fns:7,tags:"drawing,webcam,color",fnList:"setup|createCanvas|stroke|line|color|colorMode|map",note:"Scraped"},
+  {type:"Tutorial",cat:"Drawing",title:"Custom Shapes and Smooth Curves",url:"https://beta.p5js.org/tutorials/custom-shapes-and-smooth-curves/",words:3350,code:387,h:9,p:28,screens:29.2,themes:"Vector Shapes, Bezier Curves, Custom Drawing",fns:27,tags:"geometry,drawing,webcam,curves,mouse,math",fnList:"setup|createCanvas|fill|stroke|noStroke|circle|line|bezierVertex|vertex|beginShape|endShape|curve|push|pop|translate|scale|mousePressed|mouseClicked|image|color|colorMode|lerpColor|map|random|blendMode|createButton|createCapture",note:"Scraped"},
+  {type:"Tutorial",cat:"Web Design",title:"Creating and Styling HTML",url:"https://beta.p5js.org/tutorials/creating-styling-html/",words:3850,code:146,h:15,p:48,screens:25.1,themes:"DOM Manipulation, HTML CSS Styling, p5.Element",fns:9,tags:"DOM",fnList:"setup|draw|createCanvas|background|min|log|select|createDiv|createP",note:"Scraped"},
+  {type:"Tutorial",cat:"Web Design",title:"Loading and Selecting Fonts",url:"https://beta.p5js.org/tutorials/loading-and-selecting-fonts/",words:2850,code:13,h:10,p:18,screens:14.6,themes:"Typography, Custom Fonts, Text Rendering",fns:9,tags:"typography",fnList:"setup|createCanvas|background|fill|text|textSize|textFont|textAlign|loadFont",note:"Scraped"},
+  {type:"Tutorial",cat:"Accessibility",title:"How to Use p5.js with a Screen Reader",url:"https://beta.p5js.org/tutorials/p5js-with-screen-reader/",words:2100,code:8,h:10,p:14,screens:9.3,themes:"Screen Reader, Web Accessibility, Inclusive Design",fns:4,tags:"accessibility",fnList:"",note:"Scraped"},
+  {type:"Tutorial",cat:"Accessibility",title:"Writing Accessible Canvas Descriptions",url:"https://beta.p5js.org/tutorials/writing-accessible-canvas-descriptions/",words:2840,code:100,h:14,p:18,screens:10.0,themes:"Canvas Accessibility, Alt Text, Screen Reader",fns:16,tags:"accessibility",fnList:"setup|draw|createCanvas|background|fill|noStroke|ellipse|triangle|text|textSize|textStyle|red|round|describe|describeElement|gridOutput",note:"Scraped"},
+  {type:"Tutorial",cat:"Critical AI",title:"Chatting with/about Code",url:"https://beta.p5js.org/tutorials/criticalai1-chatting-with-about-code/",words:3200,code:13,h:16,p:31,screens:12.6,themes:"Generative AI, Critical AI, LLM Coding",fns:4,tags:"generative,keyboard,AI",fnList:"draw|background|keyPressed|color",note:"Scraped"},
+  {type:"Tutorial",cat:"Critical AI",title:"Critical AI Prompt Battle",url:"https://beta.p5js.org/tutorials/criticalai2-prompt-battle/",words:3850,code:127,h:13,p:31,screens:16.4,themes:"AI Prompt Engineering, Bias Detection, ML Exploration",fns:5,tags:"AI",fnList:"",note:"Scraped"},
+  {type:"Tutorial",cat:"Critical AI",title:"Critical AI Sentiment Dataset Explorer",url:"https://beta.p5js.org/tutorials/criticalai3-sentiment-dataset-explorer/",words:3847,code:87,h:27,p:42,screens:12.9,themes:"Sentiment Analysis, Dataset Exploration, Critical AI",fns:3,tags:"data,AI",fnList:"",note:"Scraped"},
+  {type:"Tutorial",cat:"Critical AI",title:"Critical AI No-AI Chatbot",url:"https://beta.p5js.org/tutorials/criticalai4-no-ai-chatbot/",words:3200,code:50,h:11,p:28,screens:13.4,themes:"Chatbot Scripting, RiveScript, No-AI Dialogue",fns:2,tags:"AI",fnList:"log|createP",note:"Scraped"},
+  {type:"Tutorial",cat:"WebGL",title:"Coordinates and Transformations",url:"https://beta.p5js.org/tutorials/coordinates-and-transformations/",words:2150,code:155,h:11,p:18,screens:15.2,themes:"3D Transformations, Coordinate Systems, WebGL",fns:22,tags:"transforms,math,DOM,3D",fnList:"setup|draw|createCanvas|background|fill|stroke|noStroke|strokeWeight|line|push|pop|translate|rotate|scale|map|random|sin|millis|sphere|cylinder|orbitControl|createVector",note:"Scraped"},
+  {type:"Tutorial",cat:"WebGL",title:"Creating Custom Geometry in WebGL",url:"https://beta.p5js.org/tutorials/custom-geometry/",words:2150,code:96,h:11,p:18,screens:12.9,themes:"3D Geometry, WebGL, Procedural Shapes",fns:22,tags:"accessibility,geometry,noise,math,3D",fnList:"setup|draw|createCanvas|background|fill|beginShape|push|pop|translate|rotate|loadModel|model|colorMode|map|noise|sphere|cylinder|buildGeometry|normalMaterial|orbitControl|createVector|describe",note:"Scraped"},
+  {type:"Tutorial",cat:"WebGL",title:"Lights, Camera, Materials",url:"https://beta.p5js.org/tutorials/lights-camera-materials/",words:2100,code:122,h:10,p:18,screens:14.4,themes:"3D Graphics, WebGL Rendering, Lighting",fns:29,tags:"accessibility,lighting,images,3D",fnList:"setup|draw|createCanvas|background|fill|stroke|noStroke|beginShape|push|pop|translate|loadImage|map|millis|box|ambientLight|directionalLight|pointLight|spotLight|ambientMaterial|normalMaterial|emissiveMaterial|specularMaterial|shininess|texture|camera|orbitControl|debugMode|describe",note:"Scraped"},
+  {type:"Tutorial",cat:"WebGL",title:"Introduction to GLSL",url:"https://beta.p5js.org/tutorials/intro-to-glsl/",words:3850,code:88,h:14,p:38,screens:19.8,themes:"Shader Programming, WebGL Graphics, GLSL",fns:6,tags:"shaders,video,math,3D",fnList:"setup|createCanvas|color|sin|loop|createVideo",note:"Scraped"},
+  {type:"Tutorial",cat:"WebGL",title:"Layered Rendering with Framebuffers",url:"https://beta.p5js.org/tutorials/layered-rendering-with-framebuffers/",words:2100,code:73,h:11,p:18,screens:12.5,themes:"WebGL Graphics, GPU Rendering, Framebuffers",fns:25,tags:"accessibility,lighting,shaders,math,3D",fnList:"setup|draw|createCanvas|background|fill|noStroke|push|pop|translate|rotate|scale|image|imageMode|map|sin|createFramebuffer|clear|sphere|ambientLight|directionalLight|ambientMaterial|normalMaterial|specularMaterial|shininess|describe",note:"Scraped"},
+  {type:"Tutorial",cat:"WebGL",title:"Optimizing WebGL Sketches",url:"https://beta.p5js.org/tutorials/optimizing-webgl-sketches/",words:2850,code:17,h:13,p:18,screens:14.3,themes:"WebGL Optimization, Performance Tuning, GPU",fns:8,tags:"accessibility,performance,shaders,curves,DOM,3D",fnList:"setup|draw|createCanvas|background|strokeWeight|bezier|createSlider|describe",note:"Scraped"},
+  {type:"Tutorial",cat:"Advanced Topics",title:"Field Guide to Debugging",url:"https://beta.p5js.org/tutorials/field-guide-to-debugging/",words:4850,code:131,h:18,p:62,screens:25.6,themes:"Debugging Methodology, Error Handling, Coding Education",fns:8,tags:"debugging",fnList:"setup|draw|createCanvas|background|circle|rect|text|textSize",note:"Scraped"},
+  {type:"Tutorial",cat:"Advanced Topics",title:"How to Optimize Your Sketches",url:"https://beta.p5js.org/tutorials/how-to-optimize-your-sketches/",words:3850,code:53,h:16,p:38,screens:12.7,themes:"Performance Optimization, Profiling, Creative Coding",fns:5,tags:"performance,DOM",fnList:"copy|dist|log|random|millis",note:"Scraped"},
+  {type:"Tutorial",cat:"Advanced Topics",title:"Getting Started with Node.js",url:"https://beta.p5js.org/tutorials/getting-started-with-nodejs/",words:2840,code:49,h:8,p:22,screens:10.3,themes:"Backend Development, Web Server, Node.js",fns:7,tags:"Node.js,data",fnList:"setup|draw|createCanvas|background|get|log|loadJSON",note:"Scraped"},
+  // EXAMPLES
+  {type:"Example",cat:"Shapes and Color",title:"Shape Primitives",url:"https://beta.p5js.org/examples/shapes-and-color-shape-primitives/",words:85,code:20,h:3,p:2,screens:3.0,themes:"Drawing Primitives, 2D Shapes, Beginner",fns:8,tags:"beginner,geometry,drawing,color",fnList:"setup|createCanvas|background|rect|square|arc|angleMode|textOutput",note:"Scraped"},
+  {type:"Example",cat:"Shapes and Color",title:"Color",url:"https://beta.p5js.org/examples/shapes-and-color-color/",words:85,code:23,h:3,p:2,screens:3.4,themes:"Color, Fill Stroke, Beginner",fns:9,tags:"beginner,geometry,color",fnList:"setup|createCanvas|background|fill|stroke|strokeWeight|square|angleMode|textOutput",note:"Scraped"},
+  {type:"Example",cat:"Animation and Variables",title:"Drawing Lines",url:"https://beta.p5js.org/examples/animation-and-variables-drawing-lines/",words:85,code:19,h:2,p:3,screens:2.1,themes:"Mouse Interaction, Animation, Drawing",fns:10,tags:"accessibility,animation,variables,drawing,mouse",fnList:"setup|createCanvas|background|stroke|strokeWeight|line|mouseDragged|colorMode|brightness|describe",note:"Scraped"},
+  {type:"Example",cat:"Animation and Variables",title:"Animation with Events",url:"https://beta.p5js.org/examples/animation-and-variables-animation-with-events/",words:95,code:21,h:2,p:3,screens:2.7,themes:"Animation, Events, Interactive",fns:10,tags:"interaction,variables,animation",fnList:"setup|draw|createCanvas|background|fill|circle|textSize|colorMode|brightness|noLoop",note:"Scraped"},
+  {type:"Example",cat:"Animation and Variables",title:"Mobile Device Movement",url:"https://beta.p5js.org/examples/animation-and-variables-mobile-device-movement/",words:85,code:17,h:2,p:2,screens:2.0,themes:"Mobile, Sensors, Device Motion",fns:6,tags:"accessibility,variables,animation,mobile",fnList:"setup|createCanvas|background|deviceMoved|map|describe",note:"Scraped"},
+  {type:"Example",cat:"Animation and Variables",title:"Conditions",url:"https://beta.p5js.org/examples/animation-and-variables-conditions/",words:180,code:25,h:3,p:4,screens:3.8,themes:"Conditionals, Logic, Animation",fns:7,tags:"conditionals,animation,variables",fnList:"setup|createCanvas|background|fill|noStroke|rect|colorMode",note:"Scraped"},
+  {type:"Example",cat:"Imported Media",title:"Words",url:"https://beta.p5js.org/examples/imported-media-words/",words:185,code:16,h:3,p:2,screens:2.9,themes:"Typography, Text Rendering, Fonts",fns:7,tags:"accessibility,typography",fnList:"setup|createCanvas|background|textSize|textFont|loadFont|describe",note:"Scraped"},
+  {type:"Example",cat:"Imported Media",title:"Copy Image Data",url:"https://beta.p5js.org/examples/imported-media-copy-image-data/",words:85,code:18,h:2,p:2,screens:2.4,themes:"Image Manipulation, Pixel Copy, Interactive Graphics",fns:6,tags:"accessibility,interaction,images",fnList:"setup|createCanvas|loadImage|image|color|describe",note:"Scraped"},
+  {type:"Example",cat:"Imported Media",title:"Alpha Mask",url:"https://beta.p5js.org/examples/imported-media-alpha-mask/",words:85,code:19,h:2,p:2,screens:2.7,themes:"Alpha Masking, Image Transparency, Media",fns:8,tags:"accessibility,images",fnList:"setup|draw|createCanvas|background|textAlign|loadImage|image|describe",note:"Scraped"},
+  {type:"Example",cat:"Imported Media",title:"Image Transparency",url:"https://beta.p5js.org/examples/imported-media-image-transparency/",words:85,code:19,h:2,p:3,screens:2.6,themes:"Image Transparency, Tint, Media",fns:7,tags:"accessibility,images",fnList:"setup|draw|createCanvas|loadImage|image|tint|describe",note:"Scraped"},
+  {type:"Example",cat:"Imported Media",title:"Audio Player",url:"https://beta.p5js.org/examples/imported-media-create-audio/",words:95,code:17,h:2,p:2,screens:2.2,themes:"Audio, Media, Sound",fns:3,tags:"audio",fnList:"setup|loop|createAudio",note:"Measured"},
+  {type:"Example",cat:"Imported Media",title:"Video Player",url:"https://beta.p5js.org/examples/imported-media-video/",words:90,code:16,h:2,p:2,screens:2.6,themes:"Video, Media, Playback",fns:3,tags:"video,DOM",fnList:"setup|createButton|createVideo",note:"Measured"},
+  {type:"Example",cat:"Imported Media",title:"Video on Canvas",url:"https://beta.p5js.org/examples/imported-media-video-canvas/",words:90,code:16,h:2,p:2,screens:2.6,themes:"Video, Canvas, Filter",fns:3,tags:"video,DOM",fnList:"setup|createButton|createVideo",note:"Measured"},
+  {type:"Example",cat:"Imported Media",title:"Video Capture",url:"https://beta.p5js.org/examples/imported-media-video-capture/",words:80,code:16,h:2,p:2,screens:2.6,themes:"Webcam, Video, Live Input",fns:3,tags:"video,DOM",fnList:"setup|createButton|createVideo",note:"Measured"},
+  {type:"Example",cat:"Input Elements",title:"Image Drop",url:"https://beta.p5js.org/examples/input-elements-image-drop/",words:80,code:22,h:2,p:2,screens:2.5,themes:"Drag Drop, DOM, Media",fns:11,tags:"accessibility,DOM",fnList:"setup|draw|createCanvas|background|fill|noStroke|text|textSize|textAlign|noLoop|describe",note:"Measured"},
+  {type:"Example",cat:"Input Elements",title:"Input and Button",url:"https://beta.p5js.org/examples/input-elements-input-button/",words:80,code:19,h:2,p:2,screens:2.7,themes:"DOM, Input, Interaction",fns:7,tags:"mouse,DOM",fnList:"setup|createCanvas|background|mousePressed|createButton|createInput|createElement",note:"Measured"},
+  {type:"Example",cat:"Input Elements",title:"Form Elements",url:"https://beta.p5js.org/examples/input-elements-dom-form-elements/",words:120,code:21,h:3,p:3,screens:3.2,themes:"DOM, Forms, Interaction",fns:4,tags:"DOM",fnList:"setup|createCanvas|createInput|createSelect",note:"Measured"},
+  {type:"Example",cat:"Transformation",title:"Translate",url:"https://beta.p5js.org/examples/transformation-translate/",words:100,code:22,h:2,p:2,screens:2.6,themes:"Transformations, Coordinate System, 2D",fns:10,tags:"transforms,DOM",fnList:"setup|draw|createCanvas|background|fill|circle|rect|push|translate|textOutput",note:"Measured"},
+  {type:"Example",cat:"Transformation",title:"Rotate",url:"https://beta.p5js.org/examples/transformation-rotate/",words:100,code:21,h:2,p:2,screens:2.7,themes:"Transformations, Rotation, Animation",fns:12,tags:"accessibility,transforms,animation,DOM",fnList:"setup|draw|createCanvas|background|fill|push|textSize|textAlign|colorMode|brightness|angleMode|describe",note:"Measured"},
+  {type:"Example",cat:"Transformation",title:"Scale",url:"https://beta.p5js.org/examples/transformation-scale/",words:100,code:25,h:2,p:2,screens:2.6,themes:"Transformations, Scale, Animation",fns:10,tags:"transforms,animation,DOM",fnList:"setup|draw|createCanvas|background|fill|square|push|pop|scale|textOutput",note:"Measured"},
+  {type:"Example",cat:"Calculating Values",title:"Linear Interpolation",url:"https://beta.p5js.org/examples/calculating-values-interpolate/",words:185,code:20,h:2,p:3,screens:2.4,themes:"Interpolation, Animation, Creative Coding",fns:10,tags:"animation,math",fnList:"setup|draw|createCanvas|background|fill|stroke|noStroke|ellipse|lerp|textOutput",note:"Scraped"},
+  {type:"Example",cat:"Calculating Values",title:"Map",url:"https://beta.p5js.org/examples/calculating-values-map/",words:210,code:15,h:2,p:2,screens:2.1,themes:"Value Mapping, Interactivity, Creative Coding",fns:10,tags:"interaction",fnList:"setup|draw|createCanvas|background|fill|noStroke|circle|colorMode|map|textOutput",note:"Scraped"},
+  {type:"Example",cat:"Calculating Values",title:"Random",url:"https://beta.p5js.org/examples/calculating-values-random/",words:280,code:20,h:2,p:3,screens:2.6,themes:"Randomness, Generative Art, Creative Coding",fns:6,tags:"accessibility,randomness,generative,DOM",fnList:"setup|draw|createCanvas|color|random|describe",note:"Scraped"},
+  {type:"Example",cat:"Calculating Values",title:"Constrain",url:"https://beta.p5js.org/examples/calculating-values-constrain/",words:185,code:21,h:3,p:1,screens:2.7,themes:"Value Clamping, Boundaries, Creative Coding",fns:7,tags:"accessibility",fnList:"setup|draw|createCanvas|background|noStroke|circle|describe",note:"Scraped"},
+  {type:"Example",cat:"Calculating Values",title:"Clock",url:"https://beta.p5js.org/examples/calculating-values-clock/",words:180,code:22,h:3,p:2,screens:3.1,themes:"Time, Transformations, Creative Coding",fns:9,tags:"accessibility,transforms,DOM",fnList:"setup|draw|createCanvas|background|stroke|translate|min|angleMode|describe",note:"Scraped"},
+  {type:"Example",cat:"Repetition",title:"Color Interpolation",url:"https://beta.p5js.org/examples/repetition-color-interpolation/",words:280,code:19,h:3,p:2,screens:3.2,themes:"Color, Interpolation, Repetition",fns:6,tags:"accessibility,color,math",fnList:"setup|createCanvas|noStroke|color|colorMode|describe",note:"Scraped"},
+  {type:"Example",cat:"Repetition",title:"Color Wheel",url:"https://beta.p5js.org/examples/repetition-color-wheel/",words:210,code:19,h:3,p:2,screens:2.8,themes:"Color Theory, Loops, Repetition",fns:9,tags:"accessibility,color,loops",fnList:"setup|createCanvas|background|noStroke|push|textAlign|colorMode|angleMode|describe",note:"Scraped"},
+  {type:"Example",cat:"Repetition",title:"Bezier",url:"https://beta.p5js.org/examples/repetition-bezier/",words:320,code:20,h:3,p:3,screens:2.5,themes:"Curves, Geometry, Repetition",fns:9,tags:"accessibility,geometry,curves",fnList:"setup|draw|createCanvas|background|noFill|strokeWeight|line|colorMode|describe",note:"Scraped"},
+  {type:"Example",cat:"Repetition",title:"Kaleidoscope",url:"https://beta.p5js.org/examples/repetition-kaleidoscope/",words:280,code:21,h:3,p:1,screens:3.1,themes:"Symmetry, Transformations, Repetition",fns:7,tags:"accessibility,transforms,DOM",fnList:"setup|draw|createCanvas|background|translate|angleMode|describe",note:"Scraped"},
+  {type:"Example",cat:"Repetition",title:"Noise",url:"https://beta.p5js.org/examples/repetition-noise/",words:180,code:22,h:2,p:2,screens:3,themes:"Perlin Noise, Generative Art, Repetition",fns:4,tags:"generative,noise",fnList:"setup|createCanvas|mouseMoved|createSlider",note:"Scraped"},
+  {type:"Example",cat:"Repetition",title:"Recursive Tree",url:"https://beta.p5js.org/examples/repetition-recursive-tree/",words:130,code:22,h:3,p:1,screens:3.2,themes:"Recursion, Generative Art, Animation",fns:11,tags:"accessibility,generative,animation,recursion",fnList:"setup|draw|createCanvas|background|stroke|line|translate|colorMode|min|angleMode|describe",note:"Scraped"},
+  {type:"Example",cat:"Listing Data with Arrays",title:"Random Poetry",url:"https://beta.p5js.org/examples/listing-data-with-arrays-random-poetry/",words:145,code:11,h:4,p:5,screens:2.9,themes:"Arrays, Typography, Randomness",fns:0,tags:"randomness,typography,arrays,data,DOM",fnList:"",note:"Scraped"},
+  {type:"Example",cat:"Angles and Motion",title:"Sine and Cosine",url:"https://beta.p5js.org/examples/angles-and-motion-sine-cosine/",words:95,code:24,h:3,p:2,screens:4.2,themes:"Trigonometry, Animation, Mathematics",fns:11,tags:"accessibility,animation,math",fnList:"setup|draw|createCanvas|background|fill|noFill|text|textSize|textAlign|angleMode|describe",note:"Scraped"},
+  {type:"Example",cat:"Angles and Motion",title:"Aim",url:"https://beta.p5js.org/examples/angles-and-motion-aim/",words:165,code:24,h:3,p:3,screens:2.5,themes:"Trigonometry, Interactivity, Mouse Tracking",fns:14,tags:"accessibility,interaction,animation,mouse,math",fnList:"setup|draw|createCanvas|background|fill|ellipse|push|pop|translate|rotate|colorMode|atan2|angleMode|describe",note:"Scraped"},
+  {type:"Example",cat:"Angles and Motion",title:"Triangle Strip",url:"https://beta.p5js.org/examples/angles-and-motion-triangle-strip/",words:180,code:23,h:2,p:1,screens:2.9,themes:"Geometry, Shapes, Trigonometry",fns:11,tags:"accessibility,animation,geometry,math",fnList:"setup|draw|createCanvas|background|translate|colorMode|map|round|angleMode|createP|describe",note:"Scraped"},
+  {type:"Example",cat:"Games",title:"Circle Clicker",url:"https://beta.p5js.org/examples/games-circle-clicker/",words:180,code:28,h:3,p:2,screens:3.8,themes:"Games, Interactivity, Game Loop",fns:11,tags:"interaction,loops,games",fnList:"setup|draw|createCanvas|background|fill|noStroke|circle|textSize|colorMode|getItem|describeElement",note:"Scraped"},
+  {type:"Example",cat:"Games",title:"Ping Pong",url:"https://beta.p5js.org/examples/games-ping-pong/",words:195,code:28,h:3,p:1,screens:5.4,themes:"Games, Keyboard Input, Collision Detection",fns:8,tags:"accessibility,keyboard,games",fnList:"setup|createCanvas|fill|noStroke|textSize|textAlign|noLoop|describe",note:"Scraped"},
+  {type:"Example",cat:"Games",title:"Snake",url:"https://beta.p5js.org/examples/games-snake/",words:165,code:21,h:3,p:2,screens:7.1,themes:"Games, Arrays, Keyboard Input",fns:0,tags:"keyboard,arrays,games",fnList:"",note:"Scraped"},
+  {type:"Example",cat:"3D",title:"Geometries",url:"https://beta.p5js.org/examples/3d-geometries/",words:115,code:17,h:2,p:1,screens:3.4,themes:"3D, WebGL, Geometry",fns:9,tags:"accessibility,geometry,3D",fnList:"setup|draw|createCanvas|background|push|loadModel|angleMode|normalMaterial|describe",note:"Scraped"},
+  {type:"Example",cat:"3D",title:"Custom Geometry",url:"https://beta.p5js.org/examples/3d-custom-geometry/",words:190,code:27,h:3,p:3,screens:3.4,themes:"3D, WebGL, Custom Geometry",fns:13,tags:"accessibility,geometry,3D",fnList:"setup|createCanvas|fill|push|pop|translate|scale|colorMode|random|angleMode|sphere|buildGeometry|describe",note:"Scraped"},
+  {type:"Example",cat:"3D",title:"Materials",url:"https://beta.p5js.org/examples/3d-materials/",words:185,code:21,h:3,p:3,screens:6.6,themes:"3D Graphics, Lighting Materials, WebGL",fns:6,tags:"accessibility,lighting,images,3D",fnList:"setup|createCanvas|loadImage|loadModel|angleMode|describe",note:"Scraped"},
+  {type:"Example",cat:"3D",title:"Orbit Control",url:"https://beta.p5js.org/examples/3d-orbit-control/",words:185,code:18,h:3,p:2,screens:2.5,themes:"3D Graphics, Interactive Camera, WebGL",fns:10,tags:"accessibility,interaction,3D",fnList:"setup|draw|createCanvas|background|noFill|stroke|strokeWeight|angleMode|orbitControl|describe",note:"Scraped"},
+  {type:"Example",cat:"3D",title:"Filter Shader",url:"https://beta.p5js.org/examples/3d-filter-shader/",words:280,code:22,h:4,p:2,screens:2.8,themes:"3D Graphics, Shader Programming, WebGL",fns:0,tags:"shaders,3D",fnList:"",note:"Scraped"},
+  {type:"Example",cat:"3D",title:"Adjusting Positions with a Shader",url:"https://beta.p5js.org/examples/3d-adjusting-positions-with-a-shader/",words:95,code:19,h:3,p:2,screens:3.6,themes:"Shader Programming, 3D Graphics, Creative Coding",fns:2,tags:"shaders,math,3D",fnList:"vertex|sin",note:"Scraped"},
+  {type:"Example",cat:"3D",title:"Framebuffer Blur",url:"https://beta.p5js.org/examples/3d-framebuffer-blur/",words:185,code:21,h:3,p:2,screens:4.9,themes:"3D Graphics, Shader Programming, Depth of Field",fns:0,tags:"shaders,3D",fnList:"",note:"Scraped"},
+  {type:"Example",cat:"Advanced Canvas Rendering",title:"Create Graphics",url:"https://beta.p5js.org/examples/advanced-canvas-rendering-create-graphics/",words:145,code:17,h:3,p:2,screens:2.6,themes:"Graphics Rendering, Canvas Manipulation, Creative Coding",fns:6,tags:"accessibility",fnList:"setup|draw|createCanvas|background|createGraphics|describe",note:"Scraped"},
+  {type:"Example",cat:"Advanced Canvas Rendering",title:"Multiple Canvases",url:"https://beta.p5js.org/examples/advanced-canvas-rendering-multiple-canvases/",words:95,code:26,h:4,p:3,screens:2.1,themes:"Canvas Manipulation, Instance Mode, Creative Coding",fns:6,tags:"",fnList:"createCanvas|background|fill|stroke|circle|square",note:"Scraped"},
+  {type:"Example",cat:"Advanced Canvas Rendering",title:"Shader as a Texture",url:"https://beta.p5js.org/examples/advanced-canvas-rendering-shader-as-a-texture/",words:95,code:25,h:3,p:2,screens:4.7,themes:"Shader Programming, 3D Graphics, Texture Mapping",fns:0,tags:"shaders,3D",fnList:"",note:"Scraped"},
+  {type:"Example",cat:"Classes and Objects",title:"Snowflakes",url:"https://beta.p5js.org/examples/classes-and-objects-snowflakes/",words:185,code:21,h:4,p:3,screens:3.1,themes:"Particle Systems, Object Oriented, Creative Coding",fns:7,tags:"accessibility,particles,OOP",fnList:"setup|draw|createCanvas|background|push|angleMode|describe",note:"Scraped"},
+  {type:"Example",cat:"Classes and Objects",title:"Shake Ball Bounce",url:"https://beta.p5js.org/examples/classes-and-objects-shake-ball-bounce/",words:185,code:20,h:3,p:2,screens:5.4,themes:"Mobile Interaction, Object Oriented, Creative Coding",fns:2,tags:"accessibility,mobile,OOP",fnList:"setup|describe",note:"Scraped"},
+  {type:"Example",cat:"Classes and Objects",title:"Connected Particles",url:"https://beta.p5js.org/examples/classes-and-objects-connected-particles/",words:95,code:17,h:3,p:2,screens:5.0,themes:"Classes, Object Oriented, Interactivity",fns:5,tags:"accessibility,interaction,math,OOP",fnList:"setup|createCanvas|colorMode|createVector|describe",note:"Scraped"},
+  {type:"Example",cat:"Classes and Objects",title:"Flocking",url:"https://beta.p5js.org/examples/classes-and-objects-flocking/",words:107,code:25,h:3,p:3,screens:6.6,themes:"Simulation, Autonomous Agents, Classes",fns:7,tags:"accessibility,simulation,mouse,OOP",fnList:"setup|draw|createCanvas|background|mouseDragged|createP|describe",note:"Scraped"},
+  {type:"Example",cat:"Loading and Saving Data",title:"Local Storage",url:"https://beta.p5js.org/examples/loading-and-saving-data-local-storage/",words:117,code:23,h:2,p:4,screens:4.3,themes:"Data Storage, Local Storage, Persistence",fns:3,tags:"data",fnList:"setup|createCanvas|push",note:"Scraped"},
+  {type:"Example",cat:"Loading and Saving Data",title:"JSON",url:"https://beta.p5js.org/examples/loading-and-saving-data-json/",words:137,code:23,h:3,p:3,screens:4.6,themes:"Data, JSON, File Loading",fns:3,tags:"data",fnList:"setup|createCanvas|push",note:"Scraped"},
+  {type:"Example",cat:"Loading and Saving Data",title:"Table",url:"https://beta.p5js.org/examples/loading-and-saving-data-table/",words:113,code:20,h:2,p:3,screens:4.7,themes:"CSV, Tabular Data, File Loading",fns:0,tags:"data",fnList:"",note:"Scraped"},
+  {type:"Example",cat:"Math and Physics",title:"Non-Orthogonal Reflection",url:"https://beta.p5js.org/examples/math-and-physics-non-orthogonal-reflection/",words:109,code:22,h:2,p:4,screens:4.1,themes:"Vectors, Physics, Reflection",fns:5,tags:"physics,math",fnList:"setup|createCanvas|colorMode|createVector|p5.Vector",note:"Scraped"},
+  {type:"Example",cat:"Math and Physics",title:"Soft Body",url:"https://beta.p5js.org/examples/math-and-physics-soft-body/",words:75,code:27,h:3,p:3,screens:3.8,themes:"Physics, Curves, Simulation",fns:2,tags:"simulation,physics,curves,math",fnList:"setup|createCanvas",note:"Scraped"},
+  {type:"Example",cat:"Math and Physics",title:"Forces",url:"https://beta.p5js.org/examples/math-and-physics-forces/",words:121,code:22,h:2,p:4,screens:4.8,themes:"Physics, Vectors, Gravity",fns:6,tags:"accessibility,physics,math",fnList:"setup|draw|createCanvas|background|colorMode|describe",note:"Scraped"},
+  {type:"Example",cat:"Math and Physics",title:"Smoke Particles",url:"https://beta.p5js.org/examples/math-and-physics-smoke-particle-system/",words:103,code:120,h:3,p:4,screens:4.7,themes:"Particle Systems, Simulation, Vectors",fns:14,tags:"simulation,particles,physics,math",fnList:"",note:"Scraped"},
+  {type:"Example",cat:"Math and Physics",title:"Game of Life",url:"https://beta.p5js.org/examples/math-and-physics-game-of-life/",words:162,code:78,h:2,p:2,screens:4.7,themes:"Cellular Automata, Simulation, Grid",fns:9,tags:"simulation,physics,math",fnList:"",note:"Scraped"},
+  {type:"Example",cat:"Math and Physics",title:"Mandelbrot Set",url:"https://beta.p5js.org/examples/math-and-physics-mandelbrot/",words:60,code:55,h:2,p:2,screens:1.6,themes:"Fractals, Mathematics, Pixel Manipulation",fns:9,tags:"recursion,physics,images,math",fnList:"",note:"Scraped"},
+  {type:"Example",cat:"Parallel Loading Promise",title:"Async Await with Promise.all",url:"https://beta.p5js.org/examples/parallel-loading-promise-async-image-loader/",words:62,code:42,h:2,p:2,screens:2.3,themes:"Async, Image Loading, Promises",fns:6,tags:"images,async",fnList:"",note:"Scraped"}
+];
+
+// ============================================================
+// SCREEN COLOR HELPER
+// ============================================================
+function screenColor(s, type) {
+  if (type === 'Tutorial') {
+    if (s < 10)  return '#47b28f';
+    if (s < 15)  return '#1b9ad1';
+    if (s < 25)  return '#ca8a04';
+    if (s < 35)  return '#f56a3a';
+    return '#eb285f';
+  } else {
+    if (s < 2)   return '#47b28f';
+    if (s < 3.5) return '#1b9ad1';
+    if (s < 5)   return '#ca8a04';
+    return '#f56a3a';
+  }
+}
+function screenClass(s, type) {
+  if (type === 'Tutorial') {
+    if (s < 10)  return 'screens-low';
+    if (s < 15)  return 'screens-ok';
+    if (s < 25)  return 'screens-medium';
+    if (s < 35)  return 'screens-high';
+    return 'screens-critical';
+  } else {
+    if (s < 2)   return 'screens-low';
+    if (s < 3.5) return 'screens-ok';
+    if (s < 5)   return 'screens-medium';
+    return 'screens-high';
+  }
+}
+
+// ============================================================
+// TUTORIAL BARS
+// ============================================================
+(function() {
+  const tutorials = pages.filter(p => p.type === 'Tutorial').sort((a,b) => b.screens - a.screens);
+  const maxScreens = 53.1;
+  const container = document.getElementById('tutorial-bars');
+  tutorials.forEach(t => {
+    const pct = (t.screens / maxScreens * 100).toFixed(1);
+    container.innerHTML += `
+      <div class="bar-row">
+        <div class="bar-label"><a href="${t.url}" target="_blank" title="${t.cat}">${t.title}</a></div>
+        <div class="bar-track">
+          <div class="bar-fill ${screenClass(t.screens,'Tutorial')}" style="width:${pct}%">${t.screens}</div>
+        </div>
+        <div class="bar-value">${t.screens} sc</div>
+      </div>`;
+  });
+  const avg = (tutorials.reduce((s,t)=>s+t.screens,0)/tutorials.length).toFixed(1);
+  container.innerHTML += `<p style="margin-top:16px;font-size:0.78rem;color:var(--muted)">Average: <strong style="color:var(--orange)">${avg} screens</strong> per tutorial · Sorted longest to shortest</p>`;
+})();
+
+// ============================================================
+// EXAMPLE BARS
+// ============================================================
+(function() {
+  const examples = pages.filter(p => p.type === 'Example').sort((a,b) => b.screens - a.screens);
+  const maxScreens = 7.1;
+  const container = document.getElementById('example-bars');
+  examples.forEach(e => {
+    const pct = Math.max(4, (e.screens / maxScreens * 100)).toFixed(1);
+    container.innerHTML += `
+      <div class="bar-row">
+        <div class="bar-label"><a href="${e.url}" target="_blank" title="${e.cat}">${e.title}</a></div>
+        <div class="bar-track">
+          <div class="bar-fill ${screenClass(e.screens,'Example')}" style="width:${pct}%">${e.screens}</div>
+        </div>
+        <div class="bar-value">${e.screens} sc</div>
+      </div>`;
+  });
+  const avg = (examples.reduce((s,e)=>s+e.screens,0)/examples.length).toFixed(2);
+  container.innerHTML += `<p style="margin-top:16px;font-size:0.78rem;color:var(--muted)">Average: <strong style="color:var(--green)">${avg} screens</strong> per example · Sorted longest to shortest</p>`;
+})();
+
+// ============================================================
+// TABLE
+// ============================================================
+let tableData = [...pages];
+let filterType = 'all';
+let searchTerm = '';
+let sortCol = 3;
+let sortDir = -1;
+
+function renderTable() {
+  let filtered = tableData.filter(p => {
+    const matchType = filterType === 'all' || p.type === filterType;
+    const matchSearch = !searchTerm ||
+      p.title.toLowerCase().includes(searchTerm) ||
+      p.cat.toLowerCase().includes(searchTerm) ||
+      p.themes.toLowerCase().includes(searchTerm);
+    return matchType && matchSearch;
+  });
+
+  filtered.sort((a,b) => {
+    const cols = ['type','cat','title','screens','words','code','fns','themes','note'];
+    const key = cols[sortCol];
+    const va = a[key], vb = b[key];
+    if (typeof va === 'number') return sortDir * (va - vb);
+    return sortDir * String(va).localeCompare(String(vb));
+  });
+
+  const tbody = document.getElementById('tableBody');
+  tbody.innerHTML = '';
+  filtered.forEach(p => {
+    const color = screenColor(p.screens, p.type);
+    tbody.innerHTML += `<tr>
+      <td><span class="type-badge type-${p.type.toLowerCase()}">${p.type}</span></td>
+      <td style="color:var(--muted);font-size:0.8rem">${p.cat}</td>
+      <td><a href="${p.url}" target="_blank" class="title-link">${p.title}</a></td>
+      <td><span class="screens-badge" style="background:${color}20;color:${color}">${p.screens}</span></td>
+      <td>${p.words.toLocaleString()}</td>
+      <td>${p.code}</td>
+      <td>${p.fns}</td>
+      <td><div class="themes">${p.themes}</div></td>
+      <td><span class="${p.note === 'Scraped' ? 'note-scraped' : 'note-estimated'}">${p.note}</span></td>
+    </tr>`;
+  });
+  document.getElementById('tableCount').textContent = `Showing ${filtered.length} of ${pages.length} pages`;
+}
+
+function filterTable(type) {
+  filterType = type;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  renderTable();
+}
+
+function sortTable(col) {
+  if (sortCol === col) sortDir *= -1;
+  else { sortCol = col; sortDir = -1; }
+  document.querySelectorAll('th').forEach((th,i) => {
+    th.classList.toggle('sorted', i === col);
+  });
+  renderTable();
+}
+
+document.getElementById('tableSearch').addEventListener('input', e => {
+  searchTerm = e.target.value.toLowerCase();
+  renderTable();
+});
+
+renderTable();
+
+// ============================================================
+// SITE MAP
+// ============================================================
+(function() {
+  const container = document.getElementById('sitemapContainer');
+  const tutCats = {};
+  const exCats = {};
+  pages.forEach(p => {
+    if (p.type === 'Tutorial') {
+      if (!tutCats[p.cat]) tutCats[p.cat] = [];
+      tutCats[p.cat].push(p);
+    } else {
+      if (!exCats[p.cat]) exCats[p.cat] = [];
+      exCats[p.cat].push(p);
+    }
+  });
+
+  function pillColor(s, type) {
+    if (type === 'Tutorial') {
+      if (s < 4) return 'background:var(--green)20;color:var(--green)';
+      if (s < 7) return 'background:var(--blue)20;color:var(--blue)';
+      if (s < 10) return 'background:var(--orange)20;color:var(--orange)';
+      return 'background:var(--red)20;color:var(--red)';
+    } else {
+      if (s < 1.5) return 'background:var(--green)20;color:var(--green)';
+      if (s < 2.5) return 'background:var(--blue)20;color:var(--blue)';
+      return 'background:var(--orange)20;color:var(--orange)';
+    }
+  }
+
+  let tutHTML = '<div class="sitemap-section"><h3>📖 Tutorials</h3>';
+  Object.entries(tutCats).forEach(([cat, items]) => {
+    tutHTML += `<div class="sitemap-category"><h4>${cat}</h4><ul class="sitemap-links">`;
+    items.forEach(p => {
+      tutHTML += `<li><a href="${p.url}" target="_blank">${p.title}</a><span class="screens-pill" style="${pillColor(p.screens,'Tutorial')}">${p.screens}sc</span></li>`;
+    });
+    tutHTML += '</ul></div>';
+  });
+  tutHTML += '</div>';
+
+  let exHTML = '<div class="sitemap-section"><h3>🎨 Examples</h3>';
+  Object.entries(exCats).forEach(([cat, items]) => {
+    exHTML += `<div class="sitemap-category"><h4>${cat}</h4><ul class="sitemap-links">`;
+    items.forEach(p => {
+      exHTML += `<li><a href="${p.url}" target="_blank">${p.title}</a><span class="screens-pill" style="${pillColor(p.screens,'Example')}">${p.screens}sc</span></li>`;
+    });
+    exHTML += '</ul></div>';
+  });
+  exHTML += '</div>';
+
+  container.innerHTML = tutHTML + exHTML;
+})();
+</script>
+
+<script>
+// ============================================================
+// TAG ENHANCEMENT â€” Injected after main script
+// ============================================================
+(function() {
+  var activeTag = null;
+
+  function tagColor(tag) {
+    var h = 0;
+    for (var i = 0; i < tag.length; i++) { h = (h * 31 + tag.charCodeAt(i)) & 0xffff; }
+    return 'tc' + (h % 8);
+  }
+
+  function renderTags(tagStr) {
+    if (!tagStr) return '';
+    return tagStr.split(',').map(function(t) {
+      t = t.trim();
+      if (!t) return '';
+      return '<span class="tag ' + tagColor(t) + '" onclick="window._filterByTag(\'' + t + '\')" title="Filter: ' + t + '">' + t + '</span>';
+    }).join('');
+  }
+
+  window._filterByTag = function(tag) {
+    activeTag = (activeTag === tag) ? null : tag;
+    document.querySelectorAll('.tag-pill').forEach(function(p) {
+      p.classList.toggle('active', p.dataset.tag === activeTag);
+    });
+    renderTable();
+  };
+
+  window._clearTagFilter = function() {
+    activeTag = null;
+    document.querySelectorAll('.tag-pill').forEach(function(p) { p.classList.remove('active'); });
+    renderTable();
+  };
+
+  // Replace renderTable with tag-aware version
+  var _orig = renderTable;
+  window.renderTable = renderTable = function() {
+    var filtered = pages.filter(function(p) {
+      var matchType   = filterType === 'all' || p.type === filterType;
+      var matchSearch = !searchTerm ||
+        p.title.toLowerCase().indexOf(searchTerm) !== -1 ||
+        p.cat.toLowerCase().indexOf(searchTerm) !== -1 ||
+        (p.themes && p.themes.toLowerCase().indexOf(searchTerm) !== -1) ||
+        (p.tags && p.tags.toLowerCase().indexOf(searchTerm) !== -1);
+      var matchTag = !activeTag || (p.tags &&
+        p.tags.split(',').map(function(t){return t.trim();}).indexOf(activeTag) !== -1);
+      return matchType && matchSearch && matchTag;
+    });
+
+    filtered.sort(function(a, b) {
+      var cols = ['type','cat','title','screens','words','code','fns','tags','themes','note'];
+      var key  = cols[sortCol] || 'screens';
+      var va = a[key], vb = b[key];
+      if (typeof va === 'number') return sortDir * (va - vb);
+      return sortDir * String(va || '').localeCompare(String(vb || ''));
+    });
+
+    var tbody = document.getElementById('tableBody');
+    tbody.innerHTML = '';
+    filtered.forEach(function(p) {
+      var color = screenColor(p.screens, p.type);
+      var nc = p.note === 'Scraped' ? 'note-scraped' : p.note === 'Measured' ? 'note-measured' : 'note-estimated';
+      tbody.innerHTML += '<tr>' +
+        '<td><span class="type-badge type-' + p.type.toLowerCase() + '">' + p.type + '</span></td>' +
+        '<td style="color:var(--muted);font-size:0.8rem">' + p.cat + '</td>' +
+        '<td><a href="' + p.url + '" target="_blank" class="title-link">' + p.title + '</a></td>' +
+        '<td><span class="screens-badge" style="background:' + color + '20;color:' + color + '">' + p.screens + '</span></td>' +
+        '<td>' + p.words.toLocaleString() + '</td>' +
+        '<td>' + p.code + '</td>' +
+        '<td>' + p.fns + '</td>' +
+        '<td>' + renderTags(p.tags) + '</td>' +
+        '<td style="font-size:0.75rem;color:var(--muted)">' + (p.themes || '') + '</td>' +
+        '<td><span class="' + nc + '">' + p.note + '</span></td>' +
+        '</tr>';
+    });
+    var tc = document.getElementById('tableCount');
+    if (tc) tc.textContent = 'Showing ' + filtered.length + ' of ' + pages.length + ' pages';
+  };
+
+  // Build and inject tag filter bar
+  var allTags = {};
+  pages.forEach(function(p) {
+    if (!p.tags) return;
+    p.tags.split(',').forEach(function(t) {
+      t = t.trim();
+      if (t) allTags[t] = (allTags[t] || 0) + 1;
+    });
+  });
+  var sorted = Object.keys(allTags).sort();
+  var bar = document.createElement('div');
+  bar.className = 'tag-filter-bar';
+  bar.id = 'tagFilterBar';
+  var label = document.createElement('span');
+  label.className = 'tf-label';
+  label.textContent = 'Filter by tag:';
+  bar.appendChild(label);
+  sorted.forEach(function(tag) {
+    var btn = document.createElement('button');
+    btn.className = 'tag-pill';
+    btn.dataset.tag = tag;
+    btn.onclick = function() { window._filterByTag(tag); };
+    btn.innerHTML = tag + ' <span style="opacity:0.55;font-size:0.65rem">(' + allTags[tag] + ')</span>';
+    bar.appendChild(btn);
+  });
+  var clear = document.createElement('button');
+  clear.className = 'tag-pill clear-btn';
+  clear.textContent = 'clear';
+  clear.onclick = window._clearTagFilter;
+  bar.appendChild(clear);
+
+  var controls = document.querySelector('.table-controls');
+  if (controls) controls.parentNode.insertBefore(bar, controls);
+
+  // Re-render with enhanced version
+  renderTable();
+})();
+</script>
+</body>
+</html>
